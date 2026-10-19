@@ -1,0 +1,64 @@
+<!-- UNIFIED HEADER ROW (Title and Reset Button) -->
+<div class="header-action-row">
+  <h2 class="kpi-title">Today's Sales</h2>
+  <button type="button" (click)="resetDashboard()">Reset Dashboard</button>
+</div>
+
+<!-- MAIN DASHBOARD WRAPPER -->
+<div class="dashboard-container">
+
+  <!-- LEFT COLUMN: Inputs Stacked -->
+  <div class="inputs-column">
+    <div class="input-card">
+      <label>Total Chats</label>
+      <input class="short-input" type="number" min="0" [value]="chats()" (input)="updateChats($event)" placeholder="0" />
+    </div>
+
+    <div class="input-card">
+      <label>Amount Sold ($)</label>
+      <div class="sale-input-group">
+        <input
+          class="short-input"
+          type="number"
+          min="0"
+          step="0.01"
+          [value]="amountSold() || ''"
+          (input)="updateSaleAmount($event)"
+          placeholder="0.00"
+        />
+        <button type="button" (click)="addSale()">Add Sale</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT COLUMN: The Parallel Metrics Box -->
+  <div class="metrics-box">
+    <h3>Performance Summary</h3>
+    
+    <div class="metric-row">
+      <label>Sales Made</label>
+      <p>{{ salesMade() }}</p>
+    </div>
+
+    <div class="metric-row">
+      <label>Total Revenue ($)</label>
+      <p>${{ totalRevenue().toFixed(2) }}</p>
+    </div>
+
+    <div class="results-section">
+      <div class="result-card">
+        <span class="result-label">RPC</span>
+        <span class="result-value">${{ revenuePerChat().toFixed(2) }}</span>
+      </div>
+      <div class="result-card">
+        <span class="result-label">Closing Ratio</span>
+        <span class="result-value">{{ conversionRate().toFixed(1) }}%</span>
+      </div>
+      <div class="result-card">
+        <span class="result-label">AOS</span>
+        <span class="result-value">${{ avgOrderValue().toFixed(2) }}</span>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,63 @@
+:host {
+  display: block;
+  padding: 16px;
+}
+
+.header-action-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.dashboard-container {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.inputs-column,
+.metrics-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Styles individual input cards */
+.input-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* MAKES THE INPUT BOXES SHORTER AND COMPACT */
+.short-input {
+  width: 120px;
+  padding: 6px 10px;
+  font-size: 1rem;
+}
+
+.sale-input-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Styles the right-hand metrics summary box */
+.metrics-box {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.results-section {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.result-card {
+  display: flex;
+  flex-direction: column;
+}

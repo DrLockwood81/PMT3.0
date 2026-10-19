@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "angular-cli": {
+      "command": "cmd.exe",
+      "args": ["/c", "npx", "-y", "@angular/cli", "mcp"]
+    }
+  }
+}

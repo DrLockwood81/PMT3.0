@@ -1,0 +1,21 @@
+<div class="follow-up-actions">
+  <button type="button" (click)="resetFollowUps()">Reset Follow-Ups</button>
+</div>
+<form class="follow-up-form" [formGroup]="DateForm" (ngSubmit)="save()">  <label for="accountId">Account ID</label>
+  <input id="accountId" type="text" formControlName="accountId" />
+
+  <label for="date">Follow-up date</label>
+  <input id="date" type="date" formControlName="date" />
+
+  <label for="note">Note (optional)</label>
+  <textarea id="note" formControlName="note"></textarea>
+
+  <button type="submit" [disabled]="DateForm.invalid">Save follow-up</button>
+</form>
+<section>
+  <h2>Saved follow-ups</h2>
+
+  @for (followUp of followUps(); track $index) {
+    <p> {{ followUp.accountId }} {{ followUp.note }} — {{ followUp.date }}</p>
+  }
+</section>

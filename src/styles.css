@@ -1,0 +1,15 @@
+body {
+    background-color:#6ba3da;
+    margin:25px;
+    padding:25px;
+}
+.follow-up-form label,
+.follow-up-form input,
+.follow-up-form textarea {
+  display: block;
+}
+
+.follow-up-form input,
+.follow-up-form textarea {
+  margin-bottom: 1rem;
+}
