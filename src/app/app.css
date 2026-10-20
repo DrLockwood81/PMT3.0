@@ -65,24 +65,10 @@ main { padding: 24px; font-family: 'Segoe UI', sans-serif; }
   white-space: nowrap;
 }
 
-.persistent-player {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background-color: rgba(255, 255, 255, 0.1);
-  padding: 4px 8px;
-  border-radius: 6px;
-}
 
 .player-label {
   font-size: 13px;
   font-family: 'Segoe UI', sans-serif;
   color: #ffffff;
   white-space: nowrap;
-}
-
-.persistent-player iframe {
-  width: 140px;
-  height: 40px;
-  border-radius: 4px;
 }

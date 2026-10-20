@@ -45,6 +45,14 @@
       <p>${{ totalRevenue().toFixed(2) }}</p>
     </div>
 
+    <!-- NEW: Last Order Entered Row -->
+    <div class="metric-row">
+      <label>Last Order Entered</label>
+      <p>
+        {{ lastOrderAmount() !== null ? ('$' + lastOrderAmount()!.toFixed(2)) : 'No sales added yet' }}
+      </p>
+    </div>
+
     <div class="results-section">
       <div class="result-card">
         <span class="result-label">RPC</span>
@@ -60,5 +68,3 @@
       </div>
     </div>
   </div>
-
-</div>

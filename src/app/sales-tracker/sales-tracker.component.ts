@@ -71,7 +71,13 @@ protected readonly conversionRate = computed(() =>
 
 protected readonly avgOrderValue = computed(() =>
   this.salesMade() > 0 ? this.totalRevenue() / this.salesMade() : 0
+
 );
+// Computed signal that automatically grabs the last item in the saleAmounts array
+protected readonly lastOrderAmount = computed(() => {
+  const amounts = this.saleAmounts();
+  return amounts.length > 0 ? amounts[amounts.length - 1] : null;
+});
 
   getDate(): string {
     return new Date().toLocaleDateString('en-US', {
