@@ -55,23 +55,40 @@
         </div>
       </div>
 
-      <!-- Key Calculated Ratios -->
+      <!-- REPLACE ONLY THIS RESULTS-SECTION BLOCK -->
       <div class="results-section">
+        <!-- RPC Metric (Goal: $70) -->
         <div class="result-card">
           <span class="result-label">RPC</span>
-          <span class="result-value">${{ revenuePerChat().toFixed(2) }}</span>
+          <span 
+            class="result-value" 
+            [style.color]="revenuePerChat() < 70 ? '#dc2626' : '#16a34a'">
+            ${{ revenuePerChat().toFixed(2) }}
+          </span>
         </div>
 
+        <!-- Closing Ratio Metric (Goal: 30%) -->
         <div class="result-card">
           <span class="result-label">Closing Ratio</span>
-          <span class="result-value">{{ conversionRate().toFixed(1) }}%</span>
+          <span 
+            class="result-value" 
+            [style.color]="conversionRate() < 30 ? '#dc2626' : '#16a34a'">
+            {{ conversionRate().toFixed(1) }}%
+          </span>
         </div>
 
+        <!-- AOS Metric (Goal: $250) -->
         <div class="result-card">
           <span class="result-label">AOS</span>
-          <span class="result-value">${{ avgOrderValue().toFixed(2) }}</span>
+          <span 
+            class="result-value" 
+            [style.color]="avgOrderValue() < 250 ? '#dc2626' : '#16a34a'">
+            ${{ avgOrderValue().toFixed(2) }}
+          </span>
         </div>
       </div>
+      <!-- END Column Two -->
+
     </div>
   </div>
 
