@@ -7,7 +7,7 @@
 <!-- MAIN DASHBOARD WRAPPER -->
 <div class="dashboard-container">
 
-  <!-- LEFT COLUMN: Inputs Stacked -->
+  <!-- LEFT COLUMN: Inputs Stacked (Chats and Sales Entry) -->
   <div class="inputs-column">
     <div class="input-card">
       <label>Total Chats</label>
@@ -31,40 +31,49 @@
     </div>
   </div>
 
-  <!-- RIGHT COLUMN: The Parallel Metrics Box -->
+  <!-- RIGHT COLUMN: Performance Summary Box -->
   <div class="metrics-box">
     <h3>Performance Summary</h3>
     
-    <div class="metric-row">
-      <label>Sales Made</label>
-      <p>{{ salesMade() }}</p>
-    </div>
+    <div class="summary-body">
+      <!-- LEFT SIDE OF SUMMARY: Vertically Stacked Totals -->
+      <div class="primary-metrics">
+        <div class="metric-row">
+          <label>Sales Made</label>
+          <p>{{ salesMade() }}</p>
+        </div>
 
-    <div class="metric-row">
-      <label>Total Revenue ($)</label>
-      <p>${{ totalRevenue().toFixed(2) }}</p>
-    </div>
+        <div class="metric-row">
+          <label>Total Revenue ($)</label>
+          <p>${{ totalRevenue().toFixed(2) }}</p>
+        </div>
 
-    <!-- NEW: Last Order Entered Row -->
-    <div class="metric-row">
-      <label>Last Order Entered</label>
-      <p>
-        {{ lastOrderAmount() !== null ? ('$' + lastOrderAmount()!.toFixed(2)) : 'No sales added yet' }}
-      </p>
-    </div>
-
-    <div class="results-section">
-      <div class="result-card">
-        <span class="result-label">RPC</span>
-        <span class="result-value">${{ revenuePerChat().toFixed(2) }}</span>
+        <div class="metric-row">
+          <label>Last Order Entered</label>
+          <p>
+            {{ lastOrderAmount() !== null ? ('$' + lastOrderAmount()!.toFixed(2)) : 'No sales added yet' }}
+          </p>
+        </div>
       </div>
-      <div class="result-card">
-        <span class="result-label">Closing Ratio</span>
-        <span class="result-value">{{ conversionRate().toFixed(1) }}%</span>
-      </div>
-      <div class="result-card">
-        <span class="result-label">AOS</span>
-        <span class="result-value">${{ avgOrderValue().toFixed(2) }}</span>
+
+      <!-- RIGHT SIDE OF SUMMARY: Top-Right Aligned RPC / CR / AOS -->
+      <div class="results-section">
+        <div class="result-card">
+          <span class="result-label">RPC</span>
+          <span class="result-value">${{ revenuePerChat().toFixed(2) }}</span>
+        </div>
+
+        <div class="result-card">
+          <span class="result-label">Closing Ratio</span>
+          <span class="result-value">{{ conversionRate().toFixed(1) }}%</span>
+        </div>
+
+        <div class="result-card">
+          <span class="result-label">AOS</span>
+          <span class="result-value">${{ avgOrderValue().toFixed(2) }}</span>
+        </div>
       </div>
     </div>
   </div>
+
+</div>
