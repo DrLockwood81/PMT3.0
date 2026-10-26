@@ -158,3 +158,27 @@
   margin-top: 8px;
   font-size: 0.9rem;
 }
+/* Layout alignment for the amount and delete button */
+.sale-action {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Delete button styling with neutral hover effect */
+.delete-sale-btn {
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.delete-sale-btn:hover {
+  color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.1);
+}

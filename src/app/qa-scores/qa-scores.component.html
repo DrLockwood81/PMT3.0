@@ -1,4 +1,122 @@
-<div>
-  <h2>⭐ QA Scores</h2>
-  <p>QA scores section coming soon...</p>
+<div class="qa-dashboard-container">
+
+  <!-- COLUMN 1: ACTUAL & POTENTIAL INPUTS -->
+  <div class="inputs-column">
+    
+    <!-- Actual Score Entry Card -->
+    <div class="card">
+      <h3> Log Actual QA Score</h3>
+      
+      <div class="form-group">
+        <label for="actualScore">Score (0 - 5)</label>
+        <select 
+          id="actualScore" 
+          [ngModel]="actualRating()" 
+          (ngModelChange)="actualRating.set($event !== null ? +$event : null)">
+          <option [ngValue]="null" disabled selected>Select rating...</option>
+          <option [value]="5">5 - 100%</option>
+          <option [value]="4">4 - 100%</option>
+          <option [value]="3">3 - 75%</option>
+          <option [value]="2">2 - 50%</option>
+          <option [value]="1">1 - 25%</option>
+          <option [value]="0">0 - 0%</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+  <label for="actualNotes">Personal Notes / Self-Reflection (Optional)</label>
+  <input 
+    id="actualNotes" 
+    type="text" 
+    placeholder="e.g. Focus on closing statement next time" 
+    [ngModel]="actualNotes()" 
+    (ngModelChange)="actualNotes.set($event)" />
+</div>
+
+      <button 
+        type="button" 
+        class="submit-btn" 
+        [disabled]="actualRating() === null" 
+        (click)="addActualReview()">
+        Add to Actual QA
+      </button>
+    </div>
+
+    <!-- Potential Score Test Card -->
+    <div class="card potential-card">
+      <h3>🔮 Potential Score Test</h3>
+      <p class="card-desc">Preview how your average changes with your next score:</p>
+
+      <div class="form-group">
+        <label for="potentialScore">Hypothetical Next Score (0 - 5)</label>
+        <select 
+          id="potentialScore" 
+          [ngModel]="potentialRating()" 
+          (ngModelChange)="potentialRating.set($event !== null ? +$event : null)">
+          <option [ngValue]="null">None selected</option>
+          <option [value]="5">5 - 100%</option>
+          <option [value]="4">4 - 100%</option>
+          <option [value]="3">3 - 75%</option>
+          <option [value]="2">2 - 50%</option>
+          <option [value]="1">1 - 25%</option>
+          <option [value]="0">0 - 0%</option>
+        </select>
+      </div>
+
+      @if (potentialRating() !== null) {
+        <div class="potential-result">
+          <span>Projected QA Average:</span>
+          <strong [style.color]="potentialAverage() < goalThreshold ? '#dc2626' : '#16a34a'">
+            {{ potentialAverage().toFixed(1) }}%
+          </strong>
+        </div>
+      }
+    </div>
+
+  </div>
+
+  <!-- COLUMN 2: SCORE PERFORMANCE & HISTORY -->
+  <div class="performance-column">
+    
+    <!-- QA Average Score Summary Banner -->
+    <div class="card summary-card">
+      <span class="summary-label">Current QA Average</span>
+      <span 
+        class="summary-value" 
+        [style.color]="currentAverage() < goalThreshold ? '#dc2626' : '#16a34a'">
+        {{ currentAverage().toFixed(1) }}%
+      </span>
+      <span class="goal-indicator" [class.below-goal]="currentAverage() < goalThreshold">
+        {{ currentAverage() >= goalThreshold ? 'Above Department Goal (62%)' : 'Below Department Goal (62%)' }}
+      </span>
+    </div>
+
+    <!-- Logged Reviews History -->
+    <div class="card history-card">
+      <h3>Logged Reviews</h3>
+
+      @if (reviews().length === 0) {
+        <p class="empty-state">No QA scores logged yet.</p>
+      } @else {
+        <div class="review-list">
+          @for (item of reviews(); track item.id) {
+            <div class="review-item">
+              <div class="review-info">
+                <span class="review-score" [style.color]="item.percentage < goalThreshold ? '#dc2626' : '#16a34a'">
+                  {{ item.percentage }}% (Rating: {{ item.rating }}/5)
+                </span>
+                <span class="review-date">{{ item.date }}</span>
+                @if (item.notes) {
+                  <span class="review-notes">— {{ item.notes }}</span>
+                }
+              </div>
+              <button type="button" class="delete-btn" (click)="deleteReview(item.id)">Delete</button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+  </div>
+
 </div>

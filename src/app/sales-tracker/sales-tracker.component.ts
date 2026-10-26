@@ -127,4 +127,11 @@ export class SalesTrackerComponent {
     this.sales.set([]);
     this.amountSold.set(0);
   }
-}
+
+  // PLACE IT HERE INSIDE THE CLASS
+  protected deleteSale(index: number): void {
+    const updatedSales = this.sales().filter((_, i) => i !== index);
+    saveDailySalesData({ chats: this.chats(), sales: updatedSales });
+    this.sales.set(updatedSales);
+  }
+} // <--- Closing brace of SalesTrackerComponent class
