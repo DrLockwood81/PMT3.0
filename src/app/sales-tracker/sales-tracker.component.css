@@ -10,17 +10,18 @@
   margin-bottom: 16px;
 }
 
-/* Outer layout: Inputs on left, Metrics box on right */
+/* MAIN 3-COLUMN FLEX CONTAINER */
 .dashboard-container {
-  display: flex;
-  gap: 24px;
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 20px;
   align-items: flex-start;
   width: 100%;
 }
 
-/* Left Column: Fixed width so inputs never shrink or get pushed off */
+/* COLUMN 1: Inputs (Left - Fixed 240px) */
 .inputs-column {
-  width: 700px;
+  width: 240px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -45,20 +46,20 @@
   gap: 10px;
 }
 
-/* Right Column: Takes the rest of the available width */
+/* COLUMN 2: Today's Performance Summary (Center - Takes 50% of remaining space) */
 .metrics-box {
-  flex: 1;
+  flex: 1 1 0px;
+  min-width: 0;
   background: rgba(255, 255, 255, 0.05);
-  padding: 10px;
+  padding: 20px;
   border-radius: 8px;
 }
 
-/* Inner Performance Summary Layout */
 .summary-body {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 20px;
+  gap: 16px;
   margin-top: 12px;
 }
 
@@ -78,11 +79,9 @@
   margin: 2px 0 0 0;
 }
 
-/* Top-Right Metrics Group */
 .results-section {
   display: flex;
-  gap: 16px;
-  align-items: flex-start;
+  gap: 12px;
 }
 
 .result-card {
@@ -93,14 +92,69 @@
 }
 
 .result-label {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 700;
   color: #1e293b;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .result-value {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 800;
   color: #0f172a;
+}
+
+/* COLUMN 3: Today's Sale Log (Right - Takes 50% of remaining space) */
+.history-column {
+  flex: 1 1 0px;
+  min-width: 0;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 8px;
+}
+
+/* Column 3 Log Items */
+.sales-log-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.sale-log-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.sale-title {
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.sale-time {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.sale-amount {
+  font-weight: 800;
+  color: #16a34a;
+}
+
+.sale-amount.negative-sale {
+  color: #dc2626;
+}
+
+.history-placeholder {
+  color: #64748b;
+  font-style: italic;
+  margin-top: 8px;
+  font-size: 0.9rem;
 }

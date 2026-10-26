@@ -4,10 +4,10 @@
   <button type="button" (click)="resetDashboard()">Reset Dashboard</button>
 </div>
 
-<!-- MAIN DASHBOARD WRAPPER -->
+<!-- MAIN DASHBOARD WRAPPER (THREE COLUMNS) -->
 <div class="dashboard-container">
 
-  <!-- LEFT COLUMN: Inputs Stacked (Chats and Sales Entry) -->
+  <!-- COLUMN 1: INPUTS (LEFT) -->
   <div class="inputs-column">
     <div class="input-card">
       <label>Total Chats</label>
@@ -20,7 +20,6 @@
         <input
           class="short-input"
           type="number"
-          min="0"
           step="0.01"
           [value]="amountSold() || ''"
           (input)="updateSaleAmount($event)"
@@ -31,12 +30,12 @@
     </div>
   </div>
 
-  <!-- RIGHT COLUMN: Performance Summary Box -->
+  <!-- COLUMN 2: PERFORMANCE SUMMARY (CENTER) -->
   <div class="metrics-box">
     <h3>Performance Summary</h3>
     
     <div class="summary-body">
-      <!-- LEFT SIDE OF SUMMARY: Vertically Stacked Totals -->
+      <!-- Vertically Stacked Totals -->
       <div class="primary-metrics">
         <div class="metric-row">
           <label>Sales Made</label>
@@ -56,7 +55,7 @@
         </div>
       </div>
 
-      <!-- RIGHT SIDE OF SUMMARY: Top-Right Aligned RPC / CR / AOS -->
+      <!-- Key Calculated Ratios -->
       <div class="results-section">
         <div class="result-card">
           <span class="result-label">RPC</span>
@@ -74,6 +73,27 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- COLUMN 3: TODAY'S SALE LOG (RIGHT) -->
+  <div class="history-column">
+    <h3>📜 Today's Sale Log</h3>
+    
+    @if (sales().length === 0) {
+      <p class="history-placeholder">No sales logged today yet.</p>
+    } @else {
+      <div class="sales-log-list">
+        @for (sale of sales(); track $index) {
+          <div class="sale-log-item">
+            <span class="sale-title">Sale {{ $index + 1 }}</span>
+            <span class="sale-time">{{ sale.timestamp }}</span>
+            <span class="sale-amount" [class.negative-sale]="sale.amount < 0">
+              ${{ sale.amount.toFixed(2) }}
+            </span>
+          </div>
+        }
+      </div>
+    }
   </div>
 
 </div>

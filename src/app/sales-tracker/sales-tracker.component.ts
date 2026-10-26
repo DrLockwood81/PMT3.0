@@ -1,83 +1,81 @@
 import { Component, signal, computed } from '@angular/core';
-// This interface defines the structure of the daily sales data that will be stored in localStorage.
+import { CommonModule } from '@angular/common';
+
+// Updated interface to include timestamp for each sale entry
+export interface SaleEntry {
+  amount: number;
+  timestamp: string;
+}
+
 interface DailySalesData {
   chats: number;
-  saleAmounts: number[];
+  sales: SaleEntry[];
 }
 
 const DAILY_SALES_STORAGE_KEY = 'dailySalesTracker';
-// This function loads the daily sales data from localStorage. If no data is found, it returns default values.
+
 function loadDailySalesData(): DailySalesData {
   const saved = localStorage.getItem(DAILY_SALES_STORAGE_KEY);
-// If no saved data is found, return default values for chats and saleAmounts.
   if (saved === null) {
-    return { chats: 0, saleAmounts: [] };
+    return { chats: 0, sales: [] };
   }
 
-  const parsed: unknown = JSON.parse(saved);
-
-  if (
-    typeof parsed === 'object' &&
-    parsed !== null &&
-    'chats' in parsed &&
-    typeof parsed.chats === 'number' &&
-    Number.isFinite(parsed.chats) &&
-    parsed.chats >= 0 &&
-    'saleAmounts' in parsed &&
-    Array.isArray(parsed.saleAmounts) &&
-    parsed.saleAmounts.every(
-      (amount: unknown) =>
-        typeof amount === 'number' && Number.isFinite(amount) && amount >= 0
-    )
-  ) {
-    return { chats: parsed.chats, saleAmounts: parsed.saleAmounts };
+  try {
+    const parsed = JSON.parse(saved);
+    if (typeof parsed === 'object' && parsed !== null && Array.isArray(parsed.sales)) {
+      return {
+        chats: typeof parsed.chats === 'number' ? parsed.chats : 0,
+        sales: parsed.sales
+      };
+    }
+  } catch {
+    // If legacy format (number array), handle graceful fallback
   }
 
-  throw new Error('Saved dashboard data is not in the expected format.');
+  return { chats: 0, sales: [] };
 }
-// This function saves the daily sales data to localStorage.
+
 function saveDailySalesData(data: DailySalesData): void {
   localStorage.setItem(DAILY_SALES_STORAGE_KEY, JSON.stringify(data));
 }
-// The SalesTrackerComponent is a standalone Angular component that tracks daily sales data, including the number of chats, sale amounts, and various computed metrics such as total revenue, revenue per chat, conversion rate, and average order value.
+
 @Component({
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   selector: 'app-sales-tracker',
   templateUrl: './sales-tracker.component.html',
   styleUrl: './sales-tracker.component.css',
 })
-// The SalesTrackerComponent class manages the state and behavior of the sales tracker dashboard.
 export class SalesTrackerComponent {
+  private readonly savedData = loadDailySalesData();
+  
+  protected readonly chats = signal(this.savedData.chats);
+  protected readonly sales = signal<SaleEntry[]>(this.savedData.sales);
+  protected readonly amountSold = signal(0);
 
-  // signals for where the user inputs will be stored
-private readonly savedData = loadDailySalesData();
-protected readonly chats = signal(this.savedData.chats);
-protected readonly saleAmounts = signal<number[]>(this.savedData.saleAmounts);
-protected readonly salesMade = computed(() => this.saleAmounts().length);
-protected readonly totalRevenue = computed(() =>
-  this.saleAmounts().reduce((total, amount) => total + amount, 0)
-);
-protected readonly amountSold = signal(0);
+  // Computed metrics based on the sales array
+  protected readonly salesMade = computed(() => this.sales().length);
+  
+  protected readonly totalRevenue = computed(() =>
+    this.sales().reduce((total, sale) => total + sale.amount, 0)
+  );
 
-// Formulas — update automatically whenever inputs change
-protected readonly revenuePerChat = computed(() =>
-  this.chats() > 0 ? this.totalRevenue() / this.chats() : 0
-);
+  protected readonly revenuePerChat = computed(() =>
+    this.chats() > 0 ? this.totalRevenue() / this.chats() : 0
+  );
 
-protected readonly conversionRate = computed(() =>
-  this.chats() > 0 ? (this.salesMade() / this.chats()) * 100 : 0
-);
+  protected readonly conversionRate = computed(() =>
+    this.chats() > 0 ? (this.salesMade() / this.chats()) * 100 : 0
+  );
 
-protected readonly avgOrderValue = computed(() =>
-  this.salesMade() > 0 ? this.totalRevenue() / this.salesMade() : 0
+  protected readonly avgOrderValue = computed(() =>
+    this.salesMade() > 0 ? this.totalRevenue() / this.salesMade() : 0
+  );
 
-);
-// Computed signal that automatically grabs the last item in the saleAmounts array
-protected readonly lastOrderAmount = computed(() => {
-  const amounts = this.saleAmounts();
-  return amounts.length > 0 ? amounts[amounts.length - 1] : null;
-});
+  protected readonly lastOrderAmount = computed(() => {
+    const currentSales = this.sales();
+    return currentSales.length > 0 ? currentSales[currentSales.length - 1].amount : null;
+  });
 
   getDate(): string {
     return new Date().toLocaleDateString('en-US', {
@@ -88,25 +86,34 @@ protected readonly lastOrderAmount = computed(() => {
   protected updateChats(event: Event): void {
     const input = event.target as HTMLInputElement;
     const chats = Math.max(0, Math.floor(Number(input.value) || 0));
-    saveDailySalesData({ chats, saleAmounts: this.saleAmounts() });
+    saveDailySalesData({ chats, sales: this.sales() });
     this.chats.set(chats);
   }
 
   protected updateSaleAmount(event: Event): void {
     const input = event.target as HTMLInputElement;
-    this.amountSold.set(Math.max(0, Number(input.value) || 0));
+    this.amountSold.set(Number(input.value) || 0);
   }
 
   protected addSale(): void {
     const amount = this.amountSold();
 
-    if (amount <= 0) {
+    if (amount === 0 || isNaN(amount)) {
       return;
     }
 
-    const saleAmounts = [...this.saleAmounts(), amount];
-    saveDailySalesData({ chats: this.chats(), saleAmounts });
-    this.saleAmounts.set(saleAmounts);
+    // Capture current formatted time (e.g. "2:15 PM")
+    const now = new Date();
+    const formattedTime = now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+
+    const newSale: SaleEntry = {
+      amount,
+      timestamp: formattedTime
+    };
+
+    const updatedSales = [...this.sales(), newSale];
+    saveDailySalesData({ chats: this.chats(), sales: updatedSales });
+    this.sales.set(updatedSales);
     this.amountSold.set(0);
   }
 
@@ -117,7 +124,7 @@ protected readonly lastOrderAmount = computed(() => {
 
     localStorage.removeItem(DAILY_SALES_STORAGE_KEY);
     this.chats.set(0);
-    this.saleAmounts.set([]);
+    this.sales.set([]);
     this.amountSold.set(0);
   }
 }
