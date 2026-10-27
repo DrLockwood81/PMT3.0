@@ -4,7 +4,7 @@
   <button type="button" (click)="resetDashboard()">Reset Dashboard</button>
 </div>
 
-<!-- MAIN DASHBOARD WRAPPER (THREE COLUMNS) -->
+<!-- MAIN DASHBOARD WRAPPER (THREE DISTINCT COLUMNS) -->
 <div class="dashboard-container">
 
   <!-- COLUMN 1: INPUTS (LEFT) -->
@@ -55,31 +55,27 @@
         </div>
       </div>
 
-      <!-- REPLACE ONLY THIS RESULTS-SECTION BLOCK -->
-      <div class="results-section">
-        <!-- RPC Metric (Goal: $70) -->
-        <div class="result-card">
+      <!-- SINGLE SOLID TOP HEADER BOX WITH NUMBERS DIRECTLY UNDERNEATH -->
+      <div class="metrics-group-container">
+        <div class="results-header-box">
           <span class="result-label">RPC</span>
+          <span class="result-label">Closing Ratio</span>
+          <span class="result-label">AOS</span>
+        </div>
+
+        <div class="results-values-row">
           <span 
             class="result-value" 
             [style.color]="revenuePerChat() < 70 ? '#dc2626' : '#16a34a'">
             ${{ revenuePerChat().toFixed(2) }}
           </span>
-        </div>
 
-        <!-- Closing Ratio Metric (Goal: 30%) -->
-        <div class="result-card">
-          <span class="result-label">Closing Ratio</span>
           <span 
             class="result-value" 
             [style.color]="conversionRate() < 30 ? '#dc2626' : '#16a34a'">
             {{ conversionRate().toFixed(1) }}%
           </span>
-        </div>
 
-        <!-- AOS Metric (Goal: $250) -->
-        <div class="result-card">
-          <span class="result-label">AOS</span>
           <span 
             class="result-value" 
             [style.color]="avgOrderValue() < 250 ? '#dc2626' : '#16a34a'">
@@ -87,7 +83,6 @@
           </span>
         </div>
       </div>
-      <!-- END Column Two -->
 
     </div>
   </div>
@@ -124,3 +119,5 @@
       </div>
     }
   </div>
+
+</div>

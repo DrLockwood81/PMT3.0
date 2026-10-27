@@ -1,6 +1,12 @@
+/* =========================================================
+   1. MAIN COMPONENT HOST & DASHBOARD CONTAINER
+   ========================================================= */
+
 :host {
   display: block;
   padding: 16px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .header-action-row {
@@ -10,16 +16,21 @@
   margin-bottom: 16px;
 }
 
-/* MAIN 3-COLUMN FLEX CONTAINER */
+/* MAIN 3-COLUMN FLEX CONTAINER (FORCES SEPARATE HORIZONTAL COLUMNS) */
 .dashboard-container {
   display: flex !important;
   flex-direction: row !important;
   gap: 20px;
   align-items: flex-start;
   width: 100%;
+  box-sizing: border-box;
 }
 
-/* COLUMN 1: Inputs (Left - Fixed 240px) */
+
+/* =========================================================
+   2. COLUMN 1: DAILY INPUT FORM (LEFT COLUMN)
+   ========================================================= */
+
 .inputs-column {
   width: 240px;
   flex-shrink: 0;
@@ -46,13 +57,18 @@
   gap: 10px;
 }
 
-/* COLUMN 2: Today's Performance Summary (Center - Takes 50% of remaining space) */
+
+/* =========================================================
+   3. COLUMN 2: TODAY'S PERFORMANCE SUMMARY (CENTER COLUMN)
+   ========================================================= */
+
 .metrics-box {
   flex: 1 1 0px;
   min-width: 0;
   background: rgba(255, 255, 255, 0.05);
   padding: 20px;
   border-radius: 8px;
+  box-sizing: border-box;
 }
 
 .summary-body {
@@ -79,41 +95,62 @@
   margin: 2px 0 0 0;
 }
 
-.results-section {
-  display: flex;
-  gap: 12px;
-}
-
-.result-card {
+/* SINGLE SOLID HEADER BOX WITH NUMBERS DIRECTLY UNDERNEATH */
+.metrics-group-container {
   display: flex;
   flex-direction: column;
+  gap: 8px;
+  min-width: 280px;
+}
+
+.results-header-box {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  text-align: center;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 10px 14px;
 }
 
 .result-label {
-  font-size: .95rem;
+  font-size: 0.85rem;
   font-weight: 800;
   color: #1e293b;
-  margin-bottom: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex: 1;
+  text-align: center;
+}
+
+.results-values-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 14px;
 }
 
 .result-value {
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: #0f172a;
+  font-size: 1.35rem;
+  font-weight: 900;
+  flex: 1;
+  text-align: center;
 }
 
-/* COLUMN 3: Today's Sale Log (Right - Takes 50% of remaining space) */
+
+/* =========================================================
+   4. COLUMN 3: TODAY'S SALE LOG (RIGHT COLUMN)
+   ========================================================= */
+
 .history-column {
   flex: 1 1 0px;
   min-width: 0;
   background: rgba(255, 255, 255, 0.05);
   padding: 20px;
   border-radius: 8px;
+  box-sizing: border-box;
 }
 
-/* Column 3 Log Items */
 .sales-log-list {
   display: flex;
   flex-direction: column;
@@ -133,7 +170,7 @@
   font-size: 1.0rem;
 }
 
-/* Spacing between Sale Title and Time */
+/* Left side container holding "Sale X" (bold) and timestamp */
 .sale-info {
   display: flex;
   align-items: center;
@@ -141,17 +178,26 @@
 }
 
 .sale-title {
-  font-weight: 700;
+  font-weight: 800; /* BOLD title "Sale 1", "Sale 2" */
   color: #1e293b;
+  font-size: 1.0rem;
 }
 
 .sale-time {
   font-size: 0.8rem;
-  color: #64748b; /* Muted grey for the time */
+  color: #64748b; /* Muted timestamp */
+}
+
+/* Right side container holding dollar amount (bold) and delete button */
+.sale-action {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .sale-amount {
-  font-weight: 800;
+  font-weight: 900; /* BOLD dollar amount */
+  font-size: 1.05rem;
   color: #060707;
 }
 
@@ -166,14 +212,6 @@
   font-size: 0.9rem;
 }
 
-/* Layout alignment for the amount and delete button */
-.sale-action {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* Delete button styling with neutral hover effect */
 .delete-sale-btn {
   background: none;
   border: none;
