@@ -130,7 +130,14 @@
   padding: 8px 12px;
   background-color: rgba(255, 255, 255, 0.08);
   border-radius: 6px;
-  font-size: 0.9rem;
+  font-size: 1.0rem;
+}
+
+/* Spacing between Sale Title and Time */
+.sale-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .sale-title {
@@ -140,12 +147,12 @@
 
 .sale-time {
   font-size: 0.8rem;
-  color: #64748b;
+  color: #64748b; /* Muted grey for the time */
 }
 
 .sale-amount {
   font-weight: 800;
-  color: #16a34a;
+  color: #060707;
 }
 
 .sale-amount.negative-sale {
@@ -158,6 +165,7 @@
   margin-top: 8px;
   font-size: 0.9rem;
 }
+
 /* Layout alignment for the amount and delete button */
 .sale-action {
   display: flex;
