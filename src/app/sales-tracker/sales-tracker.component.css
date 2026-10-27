@@ -16,7 +16,7 @@
   margin-bottom: 16px;
 }
 
-/* MAIN 3-COLUMN FLEX CONTAINER (FORCES SEPARATE HORIZONTAL COLUMNS) */
+/* MAIN 3-COLUMN FLEX CONTAINER */
 .dashboard-container {
   display: flex !important;
   flex-direction: row !important;
@@ -28,7 +28,7 @@
 
 
 /* =========================================================
-   2. COLUMN 1: DAILY INPUT FORM (LEFT COLUMN)
+   2. COLUMN 1: DAILY INPUT FORM (LEFT COLUMN - FIXED 240PX)
    ========================================================= */
 
 .inputs-column {
@@ -73,68 +73,94 @@
 
 .summary-body {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-direction: column;
   gap: 16px;
   margin-top: 12px;
 }
 
-.primary-metrics {
+/* TOP ROW: THE 3 HERO KPI CARDS */
+.kpi-panel {
   display: flex;
-  flex-direction: column;
   gap: 12px;
+  width: 100%;
 }
 
-.metric-row label {
-  font-size: 0.85rem;
-  color: #475569;
-}
-
-.metric-row p {
-  font-weight: 700;
-  margin: 2px 0 0 0;
-}
-
-/* SINGLE SOLID HEADER BOX WITH NUMBERS DIRECTLY UNDERNEATH */
-.metrics-group-container {
+.kpi-card {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  min-width: 280px;
-}
-
-.results-header-box {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.08);
-  border: 1px solid #cbd5e1;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
-  padding: 10px 14px;
+  padding: 12px 8px 10px 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.result-label {
-  font-size: 0.85rem;
+.kpi-card-title {
+  font-size: 0.75rem;
   font-weight: 800;
-  color: #1e293b;
+  color: #94a3b8;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  flex: 1;
+  margin-bottom: 4px;
   text-align: center;
 }
 
-.results-values-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 14px;
-}
-
-.result-value {
-  font-size: 1.35rem;
+.kpi-card-value {
+  font-size: 1.45rem;
   font-weight: 900;
-  flex: 1;
   text-align: center;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* GOAL STATUS MESSAGES UNDER EACH CARD NUMBER */
+.goal-message {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #22c55e;
+  margin-top: 4px;
+  text-align: center;
+}
+
+.goal-message.below-goal {
+  color: #ef4444;
+}
+
+
+/* BOTTOM ROW: SUPPORTING TOTALS BOX */
+.supporting-totals-box {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 10px 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.supporting-metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.supporting-metric label {
+  font-size: 0.75rem;
+  color: #e6c845;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.supporting-metric p {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #080a0c;
+  margin: 0;
 }
 
 
@@ -149,6 +175,36 @@
   padding: 20px;
   border-radius: 8px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.history-header h3 {
+  margin: 0;
+}
+
+/* Expand / Collapse Toggle Button */
+.toggle-log-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #164b94;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggle-log-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #f8fafc;
 }
 
 .sales-log-list {
@@ -156,8 +212,6 @@
   flex-direction: column;
   gap: 8px;
   margin-top: 12px;
-  max-height: 320px;
-  overflow-y: auto;
 }
 
 .sale-log-item {
@@ -170,7 +224,6 @@
   font-size: 1.0rem;
 }
 
-/* Left side container holding "Sale X" (bold) and timestamp */
 .sale-info {
   display: flex;
   align-items: center;
@@ -178,17 +231,16 @@
 }
 
 .sale-title {
-  font-weight: 800; /* BOLD title "Sale 1", "Sale 2" */
+  font-weight: 800;
   color: #1e293b;
-  font-size: 1.0rem;
+  font-size: 0.95rem;
 }
 
 .sale-time {
   font-size: 0.8rem;
-  color: #64748b; /* Muted timestamp */
+  color: #64748b;
 }
 
-/* Right side container holding dollar amount (bold) and delete button */
 .sale-action {
   display: flex;
   align-items: center;
@@ -196,7 +248,7 @@
 }
 
 .sale-amount {
-  font-weight: 900; /* BOLD dollar amount */
+  font-weight: 900;
   font-size: 1.05rem;
   color: #060707;
 }
@@ -206,7 +258,7 @@
 }
 
 .history-placeholder {
-  color: #64748b;
+  color: #070575;
   font-style: italic;
   margin-top: 8px;
   font-size: 0.9rem;
@@ -215,7 +267,7 @@
 .delete-sale-btn {
   background: none;
   border: none;
-  color: #64748b;
+  color: #070575;
   font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;

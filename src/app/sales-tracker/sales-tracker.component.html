@@ -4,7 +4,7 @@
   <button type="button" (click)="resetDashboard()">Reset Dashboard</button>
 </div>
 
-<!-- MAIN DASHBOARD WRAPPER (THREE DISTINCT COLUMNS) -->
+<!-- MAIN DASHBOARD WRAPPER (THREE COLUMNS) -->
 <div class="dashboard-container">
 
   <!-- COLUMN 1: INPUTS (LEFT) -->
@@ -35,70 +35,94 @@
     <h3>Performance Summary</h3>
     
     <div class="summary-body">
-      <!-- Vertically Stacked Totals -->
-      <div class="primary-metrics">
-        <div class="metric-row">
+      
+      <!-- TOP ROW: THE 3 HERO KPI CARDS -->
+      <div class="kpi-panel">
+        
+        <!-- RPC Card -->
+        <div class="kpi-card">
+          <span class="kpi-card-title">RPC</span>
+          <span 
+            class="kpi-card-value" 
+            [style.color]="revenuePerChat() < 70 ? '#ef4444' : '#22c55e'">
+            ${{ revenuePerChat().toFixed(2) }}
+          </span>
+          <span class="goal-message" [class.below-goal]="revenuePerChat() < 70">
+            {{ revenuePerChat() >= 70 ? ('+$' + (revenuePerChat() - 70).toFixed(2) + ' above goal') : ('-$' + (70 - revenuePerChat()).toFixed(2) + ' below goal') }}
+          </span>
+        </div>
+
+        <!-- Closing Ratio Card -->
+        <div class="kpi-card">
+          <span class="kpi-card-title">Closing Ratio</span>
+          <span 
+            class="kpi-card-value" 
+            [style.color]="conversionRate() < 30 ? '#ef4444' : '#22c55e'">
+            {{ conversionRate().toFixed(1) }}%
+          </span>
+          <span class="goal-message" [class.below-goal]="conversionRate() < 30">
+            {{ conversionRate() >= 30 ? ('+' + (conversionRate() - 30).toFixed(1) + '% above goal') : ('-' + (30 - conversionRate()).toFixed(1) + '% below goal') }}
+          </span>
+        </div>
+
+        <!-- AOS Card -->
+        <div class="kpi-card">
+          <span class="kpi-card-title">AOS</span>
+          <span 
+            class="kpi-card-value" 
+            [style.color]="avgOrderValue() < 250 ? '#ef4444' : '#22c55e'">
+            ${{ avgOrderValue().toFixed(2) }}
+          </span>
+          <span class="goal-message" [class.below-goal]="avgOrderValue() < 250">
+            {{ avgOrderValue() >= 250 ? ('+$' + (avgOrderValue() - 250).toFixed(2) + ' above goal') : ('-$' + (250 - avgOrderValue()).toFixed(2) + ' below goal') }}
+          </span>
+        </div>
+
+      </div>
+
+      <!-- BOTTOM ROW: SUPPORTING TOTALS BOX -->
+      <div class="supporting-totals-box">
+        <div class="supporting-metric">
           <label>Sales Made</label>
           <p>{{ salesMade() }}</p>
         </div>
 
-        <div class="metric-row">
-          <label>Total Revenue ($)</label>
+        <div class="supporting-metric">
+          <label>Total Revenue</label>
           <p>${{ totalRevenue().toFixed(2) }}</p>
         </div>
 
-        <div class="metric-row">
+        <div class="supporting-metric">
           <label>Last Order Entered</label>
           <p>
-            {{ lastOrderAmount() !== null ? ('$' + lastOrderAmount()!.toFixed(2)) : 'No sales added yet' }}
+            {{ lastOrderAmount() !== null ? ('$' + lastOrderAmount()!.toFixed(2)) : 'None' }}
           </p>
-        </div>
-      </div>
-
-      <!-- SINGLE SOLID TOP HEADER BOX WITH NUMBERS DIRECTLY UNDERNEATH -->
-      <div class="metrics-group-container">
-        <div class="results-header-box">
-          <span class="result-label">RPC</span>
-          <span class="result-label">Closing Ratio</span>
-          <span class="result-label">AOS</span>
-        </div>
-
-        <div class="results-values-row">
-          <span 
-            class="result-value" 
-            [style.color]="revenuePerChat() < 70 ? '#dc2626' : '#16a34a'">
-            ${{ revenuePerChat().toFixed(2) }}
-          </span>
-
-          <span 
-            class="result-value" 
-            [style.color]="conversionRate() < 30 ? '#dc2626' : '#16a34a'">
-            {{ conversionRate().toFixed(1) }}%
-          </span>
-
-          <span 
-            class="result-value" 
-            [style.color]="avgOrderValue() < 250 ? '#dc2626' : '#16a34a'">
-            ${{ avgOrderValue().toFixed(2) }}
-          </span>
         </div>
       </div>
 
     </div>
   </div>
 
-  <!-- COLUMN 3: TODAY'S SALE LOG (RIGHT) -->
+  <!-- COLUMN 3: TODAY'S SALE LOG (RIGHT COLUMN) -->
   <div class="history-column">
-    <h3>📜 Today's Sale Log</h3>
+    <div class="history-header">
+      <h3>📜 Today's Sale Log</h3>
+      @if (sales().length > 3) {
+        <button type="button" class="toggle-log-btn" (click)="toggleShowAllSales()">
+          {{ showAllSales() ? 'Show Less' : 'View All (' + sales().length + ')' }}
+        </button>
+      }
+    </div>
     
     @if (sales().length === 0) {
       <p class="history-placeholder">No sales logged today yet.</p>
     } @else {
       <div class="sales-log-list">
-        @for (sale of sales(); track $index) {
+        <!-- Reverses array so newest sale is at top, limits to 3 unless expanded -->
+        @for (sale of (showAllSales() ? sales().slice().reverse() : sales().slice().reverse().slice(0, 3)); track $index) {
           <div class="sale-log-item">
             <div class="sale-info">
-              <span class="sale-title">Sale {{ $index + 1 }}</span>
+              <span class="sale-title">Sale {{ sales().length - (showAllSales() ? $index :$index) }}</span>
               <span class="sale-time">{{ sale.timestamp }}</span>
             </div>
             
@@ -109,7 +133,7 @@
               <button 
                 type="button" 
                 class="delete-sale-btn" 
-                (click)="deleteSale($index)" 
+                (click)="deleteSale(sales().length - 1 - $index)" 
                 title="Remove Sale">
                 ✕
               </button>

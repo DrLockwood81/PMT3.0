@@ -51,6 +51,7 @@ export class SalesTrackerComponent {
   protected readonly chats = signal(this.savedData.chats);
   protected readonly sales = signal<SaleEntry[]>(this.savedData.sales);
   protected readonly amountSold = signal(0);
+  protected readonly showAllSales = signal<boolean>(false);
 
   protected readonly salesMade = computed(() => this.sales().length);
   
@@ -79,6 +80,10 @@ export class SalesTrackerComponent {
     return new Date().toLocaleDateString('en-US', {
       weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
     });
+  }
+
+  protected toggleShowAllSales(): void {
+    this.showAllSales.update((val) => !val);
   }
 
   protected updateChats(event: Event): void {
