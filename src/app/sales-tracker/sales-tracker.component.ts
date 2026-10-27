@@ -1,7 +1,6 @@
 import { Component, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-// Updated interface to include timestamp for each sale entry
 export interface SaleEntry {
   amount: number;
   timestamp: string;
@@ -29,7 +28,7 @@ function loadDailySalesData(): DailySalesData {
       };
     }
   } catch {
-    // If legacy format (number array), handle graceful fallback
+    // Fallback if data format is invalid
   }
 
   return { chats: 0, sales: [] };
@@ -53,7 +52,6 @@ export class SalesTrackerComponent {
   protected readonly sales = signal<SaleEntry[]>(this.savedData.sales);
   protected readonly amountSold = signal(0);
 
-  // Computed metrics based on the sales array
   protected readonly salesMade = computed(() => this.sales().length);
   
   protected readonly totalRevenue = computed(() =>
@@ -102,7 +100,6 @@ export class SalesTrackerComponent {
       return;
     }
 
-    // Capture current formatted time (e.g. "2:15 PM")
     const now = new Date();
     const formattedTime = now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
 
@@ -117,6 +114,12 @@ export class SalesTrackerComponent {
     this.amountSold.set(0);
   }
 
+  protected deleteSale(index: number): void {
+    const updatedSales = this.sales().filter((_, i) => i !== index);
+    saveDailySalesData({ chats: this.chats(), sales: updatedSales });
+    this.sales.set(updatedSales);
+  }
+
   protected resetDashboard(): void {
     if (!window.confirm('Reset today’s chats and recorded sales?')) {
       return;
@@ -127,11 +130,4 @@ export class SalesTrackerComponent {
     this.sales.set([]);
     this.amountSold.set(0);
   }
-
-  // PLACE IT HERE INSIDE THE CLASS
-  protected deleteSale(index: number): void {
-    const updatedSales = this.sales().filter((_, i) => i !== index);
-    saveDailySalesData({ chats: this.chats(), sales: updatedSales });
-    this.sales.set(updatedSales);
-  }
-} // <--- Closing brace of SalesTrackerComponent class
+}
