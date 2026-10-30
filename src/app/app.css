@@ -1,4 +1,8 @@
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 header {
   background-color: #000066;
@@ -9,28 +13,45 @@ header {
   justify-content: space-between;
 }
 
-header h1 { font-size: 22px; font-family: 'Segoe UI', sans-serif; }
+header h1 {
+  font-size: 22px;
+  font-family: 'Segoe UI', sans-serif;
+}
 
-nav { display: flex; gap: 12px; }
+nav {
+  display: flex;
+  gap: 12px;
+}
 
 nav a {
   color: white;
   text-decoration: none;
-  font-family: 'Segoe UI', times new roman, sans-serif;
+  font-family: 'Segoe UI', 'Times New Roman', sans-serif;
   font-size: 15px;
   padding: 8px 14px;
   border-radius: 6px;
   transition: background-color 0.2s;
 }
 
-nav a:hover { background-color: rgba(94, 95, 163, 0.74); }
-nav a.active { background-color: #ffce1f; font-weight: bold; }
+nav a:hover {
+  background-color: rgba(94, 95, 163, 0.74);
+}
 
-main { padding: 24px; font-family: 'Segoe UI', sans-serif; }
-/* Styles the date container sitting above the navy banner */
+nav a.active {
+  background-color: #ffce1f;
+  color: #000000;
+  font-weight: bold;
+}
+
+main {
+  padding: 24px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Global date container sitting above the main content */
 .global-date-container {
   padding: 10px 24px;
-  background-color: #f4f6f9; /* Matches your light background */
+  background-color: #f4f6f9;
 }
 
 .global-date-container h2 {
@@ -39,36 +60,4 @@ main { padding: 24px; font-family: 'Segoe UI', sans-serif; }
   font-family: 'Segoe UI', sans-serif;
   font-weight: 600;
   color: #333333;
-}
-/* Container inside the header */
-.persistent-player {
-  display: flex;
-  align-items: center;
-  background-color: rgba(255, 255, 255, 0.1);
-  padding: 4px;
-  border-radius: 6px;
-}
-
-.persistent-player {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background-color: rgba(255, 255, 255, 0.1);
-  padding: 6px 12px;
-  border-radius: 6px;
-}
-
-.player-label {
-  font-size: 14px;
-  font-family: 'Segoe UI', sans-serif;
-  color: #ffffff;
-  white-space: nowrap;
-}
-
-
-.player-label {
-  font-size: 13px;
-  font-family: 'Segoe UI', sans-serif;
-  color: #ffffff;
-  white-space: nowrap;
 }
